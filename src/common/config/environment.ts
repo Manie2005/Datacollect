@@ -29,9 +29,7 @@ interface IEnvironment {
   JWT_EXPIRES_IN: {
     EXPIRES_IN: number;
   };
-  MACHINE_LEARNING:{
-    ML_URL: string;
-  };
+
   EMAIL: {
     SERVICE: string;
     USERNAME: string;
@@ -100,9 +98,7 @@ export const environment: IEnvironment = {
   PROJECT_PORT: {
     PORT: configService.getOrThrow('PROJECT_PORT'),
   },
-  MACHINE_LEARNING:{
-    ML_URL: configService.getOrThrow('MACHINE_LEARNING_URL'),
-  },
+ 
   EMAIL: {
     SERVICE: process.env.EMAIL_SERVICE,
     USERNAME: process.env.EMAIL_USERNAME,
