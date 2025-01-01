@@ -1,6 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { LoginDto } from './dto/login.dto';  // Assuming you have a LoginDto for validation
+import { LoginDto } from 'src/dto/login-user.dto';// Assuming you have a LoginDto for validation
+import { UnauthorizedException } from '@nestjs/common';
 
 @Controller('admin')
 export class AdminController {
@@ -18,4 +19,5 @@ export class AdminController {
     const token = await this.adminService.generateJwtToken(admin);
     return { success: true, token };
   }
+  
 }
