@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Delete, Patch, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Get, Param, Delete, Patch, UseGuards, Request, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard'; // Assuming JwtAuthGuard is in the auth folder
+import { User } from 'src/schemas/user.schema';
 
 @Controller('user')
 export class UserController {
@@ -17,16 +18,16 @@ export class UserController {
   }
 
   // Profile route to get the authenticated user's profile
-  @UseGuards(JwtAuthGuard)  // Protect the route with JWT Auth Guard
+  @UseGuards(JwtAuthGuard) // Protect the route with JWT Auth Guard
   @Get('profile')
   async getProfile(@Request() req) {
-    const userId = req.user._id;  // Get user ID from the request (set by JwtAuthGuard)
-    return this.userService.findById(userId);  // Fetch user profile by user ID
+    const userId = req.user._id; // Get user ID from the request (set by JwtAuthGuard)
+    return this.userService.findById(userId); // Fetch user profile by user ID
   }
 
   @Patch(':id')
   async updateUserProfile(
-    @Param('id') id: string, 
+    @Param('id') id: string,
     @Body() updateData: Partial<any>,
   ) {
     return this.userService.updateProfile(id, updateData);
@@ -36,4 +37,12 @@ export class UserController {
   async deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
-}
+
+  // Block a user by ID
+  @Patch(':id/block')
+  async blockUser(@Param('id') id: string): Promise<User> {
+    console.log(`Blocking user with ID: ${id}`);
+    return this.userService.blockUser(id);
+  }
+  
+    }

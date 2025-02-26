@@ -1,8 +1,10 @@
 import { Prop,Schema,SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { PrimaryGeneratedColumn } from "typeorm";
 @Schema()
 export class User extends Document{
-    @Prop({required:true})
+
+        @Prop({required:true})
     firstname:string;
 
     @Prop({required:true})
@@ -35,6 +37,9 @@ isVerified: boolean;
 
     @Prop()
     otpCode?:string;
+
+    @Prop({ default: false }) // Default value is false
+isBlocked: boolean;
 
     @Prop()
     otpexpires?:string;
