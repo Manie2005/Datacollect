@@ -1,7 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { LoginDto } from 'src/dto/login-user.dto';
-import { UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { CreateAdminDto } from 'src/dto/create-admin.dto';
 
 @Controller('admin')
@@ -11,7 +10,20 @@ export class AdminController {
   // Admin Signup
   @Post('signup')
   async createAdmin(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.createAdmin(createAdminDto);
+    try {
+      const admin = await this.adminService.createAdmin(createAdminDto);
+      return {
+        success: true,
+        message: 'Admin account created successfully',
+        admin: {
+          id: admin._id,
+          email: admin.email,
+          role: admin.role,
+        },
+      };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   // Admin Login
@@ -24,7 +36,6 @@ export class AdminController {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const token = await this.adminService.generateJwtToken(admin);
-    return { success: true, token };
+    return this.adminService.generateJwtToken(admin);
   }
 }

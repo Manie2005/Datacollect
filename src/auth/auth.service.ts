@@ -114,7 +114,6 @@ export class AuthService {
 
     return { message: 'Account successfully verified' };
   }
-
   async login(loginDto: LoginDto): Promise<any> {
     const { email, password } = loginDto;
   
@@ -129,7 +128,18 @@ export class AuthService {
       role: user.role, // Include the role in the token payload
     });
   
-    return { accessToken: token, role: user.role };
+    return {
+      success: true,
+      message: 'User logged in successfully',
+      accessToken: token,
+      user: {
+        id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        role: user.role,
+      },
+    };
   }
   
 

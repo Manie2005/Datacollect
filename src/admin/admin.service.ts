@@ -45,9 +45,20 @@ export class AdminService {
     return isMatch ? admin : null;
   }
 
-  // Generate JWT Token
+  // Generate JWT Token with a success message
   async generateJwtToken(admin: Admin) {
     const payload = { email: admin.email, role: 'admin' };
-    return this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
+
+    return {
+      success: true,
+      message: 'Admin logged in successfully',
+      token,
+      admin: {
+        id: admin._id,
+        email: admin.email,
+        role: admin.role,
+      },
+    };
   }
 }
