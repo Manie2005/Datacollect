@@ -2,26 +2,23 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/schemas/user.schema';
+import { Admin } from 'src/schemas/admin.schema';
 
 @Injectable()
 export class AdminSeederService implements OnModuleInit {
-  constructor(@InjectModel(User.name) private readonly userModel: Model<User>) {}
+  constructor(@InjectModel(Admin.name) private readonly adminModel: Model<Admin>) {}
 
   async onModuleInit() {
-    const adminEmail = process.env.ADMIN_EMAIL || 'maniesamuel24@gmail.com';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'C@keMania2024';
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'SecurePass123';
 
-    const existingAdmin = await this.userModel.findOne({ email: adminEmail, role: 'admin' });
+    const existingAdmin = await this.adminModel.findOne({ email: adminEmail });
     if (!existingAdmin) {
       const hashedPassword = await bcrypt.hash(adminPassword, 12);
-      await this.userModel.create({
-        firstname: 'Admin',
-        lastname: 'Account',
+      await this.adminModel.create({
         email: adminEmail,
         password: hashedPassword,
         role: 'admin',
-        isVerified: true,
       });
       console.log('Admin account seeded successfully');
     }

@@ -7,6 +7,7 @@ import { User, UserSchema } from './schemas/user.schema'; // User schema
 import { JwtModule } from '@nestjs/jwt'; // Import JwtModule
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { Admin, AdminSchema } from './schemas/admin.schema';
 
 @Module({
   imports: [
@@ -16,10 +17,12 @@ import { AuthModule } from './auth/auth.module';
     }),
     MongooseModule.forRoot(process.env.DB_URI), // MongoDB connection
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), // Register User schema
+    MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]), // Register User schema
+
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'CANDYMAN', // You can use an environment variable for this
       signOptions: { expiresIn: '60s' }, // You can adjust the expiration time
-    }), AdminModule,AuthModule
+    }),AdminModule, AuthModule
   ],
 
   controllers: [AuthController], // AuthController

@@ -7,7 +7,10 @@ export class Admin extends Document {
   email: string;
 
   @Prop({ required: true })
-  password: string;  // Store the hashed password here
+  password: string;
+
+  @Prop({ default: 'admin' })  // Ensure role is always set to 'admin'
+  role: string;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);
