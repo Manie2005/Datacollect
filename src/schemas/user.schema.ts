@@ -43,5 +43,10 @@ isBlocked: boolean;
 
     @Prop()
     otpexpires?:string;
+
+
+  // ✅ Add this field to fix refresh token issue
+  @Prop({ default: null })
+  refreshToken?: string;
 }
 export const UserSchema =SchemaFactory.createForClass(User);
